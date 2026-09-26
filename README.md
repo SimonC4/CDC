@@ -4,7 +4,7 @@ A small, dependency-free static website. Every Google Sheet row represents one 1
 
 ## Current state
 
-The website runs with **fictional sample records**. No Google Sheet is connected and no GitHub deployment has been completed. An empty `sheetCsvUrl` in `config.js` enables the clearly labelled sample mode. Never mistake the sample standings for club results.
+The website is published at https://simonc4.github.io/CDC/ and configured to read the dedicated, published Google Sheets Records tab. The initial sheet contains 12 fictional example records; replace these with club records before using the standings as real results. The site checks the sheet every minute while visible. An empty `sheetCsvUrl` in `config.js` enables the clearly labelled local sample mode.
 
 ## Connect Google Sheets
 
