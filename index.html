@@ -6,9 +6,9 @@
   <meta name="description" content="Cambridge Darts Club 180 leaderboard and recent 180s.">
   <title>NZDC 180 Leaderboard · Cambridge Darts Club</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23192925'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23c8e87c' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23c8e87c'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=cambridge-blue-4">
+  <link rel="stylesheet" href="styles.css?v=cambridge-blue-5">
   <script src="config.js?v=sheet-1" defer></script>
-  <script src="leaderboard.js?v=layout-3" defer></script>
+  <script src="leaderboard.js?v=layout-4" defer></script>
   <script src="app.js?v=layout-3" defer></script>
 </head>
 <body>
@@ -18,7 +18,7 @@
     <div id="demo" class="notice" hidden>Proof of concept · These are fictional sample records. A club Google Sheet has not been connected yet.</div>
     <div class="board-layout">
       <section class="board" aria-labelledby="board-title"><div class="section-heading"><h2 id="board-title">Leaderboard</h2><span>All recorded dates</span></div><table><caption class="sr-only">Players ranked by number of recorded 180s. Equal totals share a rank.</caption><thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col" class="number">180s</th></tr></thead><tbody id="standings"></tbody></table><p id="empty" class="empty">Loading the board…</p><p class="table-note">Equal totals share a rank.</p></section>
-      <section class="recent" aria-labelledby="recent-title"><div class="section-heading"><h2 id="recent-title">Recent 180s</h2><span>Latest 10</span></div><ol id="recent-list"></ol><p id="recent-empty" class="empty">Loading recent 180s…</p></section>
+      <section class="recent" aria-labelledby="recent-title"><div class="section-heading"><h2 id="recent-title">Recent 180s</h2><span>Latest 20</span></div><ol id="recent-list"></ol><p id="recent-empty" class="empty">Loading recent 180s…</p></section>
     </div>
     <div class="sync"><p id="status" role="status" aria-live="polite">Loading records…</p><button id="refresh" type="button">Refresh now <span aria-hidden="true">↻</span></button></div>
     <p id="warning" class="warning" role="status" hidden></p>
