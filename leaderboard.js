@@ -28,14 +28,18 @@
   function readRecords(csv) {
     const rows = parseCSV(csv), header = rows.shift() || [];
     const names = header.map(s => s.trim().toLowerCase());
-    if (names.length !== 2 || new Set(names).size !== 2 || !names.includes('player') || !names.includes('date'))
-      throw new Error('The published tab must contain exactly two columns: Player and Date.');
-    const pi = names.indexOf('player'), di = names.indexOf('date'), records = [], invalidRows = [];
+    if (![2,3].includes(names.length) || new Set(names).size !== names.length || !names.includes('player') || !names.includes('date') || names.some(n => !['player','date','count'].includes(n)))
+      throw new Error('Use columns Player and Date, with an optional Count column.');
+    const pi = names.indexOf('player'), di = names.indexOf('date'), ci = names.indexOf('count'), records = [], invalidRows = [];
     rows.forEach((row, i) => {
       if (row.every(s => !s.trim())) return;
       const player = (row[pi] || '').trim().replace(/\s+/g, ' '), date = (row[di] || '').trim();
-      if (row.length !== 2 || !player || !validDate(date)) { invalidRows.push(i + 2); return; }
-      records.push({ player, date, row: i + 2 });
+      const rawCount = ci < 0 ? '' : (row[ci] || '').trim();
+      const count = rawCount === '' ? 1 : Number(rawCount);
+      const countValid = rawCount === '' || (/^\d+$/.test(rawCount) && Number.isSafeInteger(count) && count > 0);
+      // An undated row must explicitly specify its opening total.
+      if (row.length > names.length || !player || !countValid || (date ? !validDate(date) : rawCount === '')) { invalidRows.push(i + 2); return; }
+      records.push({ player, date, count, row: i + 2 });
     });
     return { records, invalidRows };
   }
@@ -44,12 +48,12 @@
     for (const r of records) {
       const key = r.player.toLocaleLowerCase('en-NZ');
       if (!map.has(key)) map.set(key, { player: r.player, total: 0 });
-      map.get(key).total++;
+      map.get(key).total += r.count ?? 1;
     }
     const standings = [...map.values()].sort((a,b) => b.total-a.total || a.player.localeCompare(b.player, 'en-NZ'));
     standings.forEach((p,i) => p.rank = i && p.total === standings[i-1].total ? standings[i-1].rank : i+1);
-    const recent = [...records].sort((a,b) => b.date.localeCompare(a.date) || b.row-a.row).slice(0,10);
-    return { standings, recent, total: records.length, latest: recent[0]?.date || null };
+    const recent = records.filter(r => r.date).sort((a,b) => b.date.localeCompare(a.date) || b.row-a.row).slice(0,10);
+    return { standings, recent, total: records.reduce((sum,r) => sum + (r.count ?? 1),0), latest: recent[0]?.date || null };
   }
   const api = { parseCSV, validDate, readRecords, summarise };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

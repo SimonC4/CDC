@@ -15,12 +15,12 @@ function render(data) {
   }));
   $('recent-list').replaceChildren(...recent.map(r => {
     const item = document.createElement('li'), details = document.createElement('div'), time = el('time',formatDate(r.date)); time.dateTime = r.date;
-    details.append(el('strong',r.player),time); item.append(details,el('span','180','maximum')); return item;
+    details.append(el('strong',r.player),time); item.append(details,el('span',r.count > 1 ? `${r.count} × 180` : '180','maximum')); return item;
   }));
   $('empty').hidden = standings.length > 0; $('empty').textContent = 'No 180s recorded yet.';
-  $('recent-empty').hidden = recent.length > 0; $('recent-empty').textContent = 'The next maximum starts the board.';
+  $('recent-empty').hidden = recent.length > 0; $('recent-empty').textContent = 'No dated 180s recorded yet.';
   $('warning').hidden = data.invalidRows.length === 0;
-  $('warning').textContent = data.invalidRows.length ? `${data.invalidRows.length} invalid row(s) excluded (sheet rows ${data.invalidRows.slice(0,12).join(', ')}${data.invalidRows.length > 12 ? ', …' : ''}). Each row needs a player and a date in YYYY-MM-DD format.` : '';
+  $('warning').textContent = data.invalidRows.length ? `${data.invalidRows.length} invalid row(s) excluded (sheet rows ${data.invalidRows.slice(0,12).join(', ')}${data.invalidRows.length > 12 ? ', …' : ''}). Use a player and YYYY-MM-DD date, or leave Date blank and enter a positive whole number in Count for a starting total.` : '';
 }
 function sourceUrl() {
   if (demoMode) return new URL('sample-records.csv',location.href);

@@ -1,6 +1,6 @@
 # Cambridge Darts Club — 180 leaderboard
 
-A small, dependency-free static website. Every Google Sheet row represents one 180. The browser calculates all-time totals, shared ranks (1, 2, 2, 4), and the ten latest records. Repeat rows count separately, including multiple 180s by the same player on one date. Names ignore letter case and extra spaces; use a consistent distinct name for each player.
+A small, dependency-free static website. A dated Google Sheet row represents one 180 by default. The optional Count column supports opening totals and multiple 180s on a date. The browser calculates all-time totals, shared ranks (1, 2, 2, 4), and the ten latest records. Repeat rows count separately, including multiple 180s by the same player on one date. Names ignore letter case and extra spaces; use a consistent distinct name for each player.
 
 ## Current state
 
@@ -9,7 +9,7 @@ The website is published at https://simonc4.github.io/CDC/ and configured to rea
 ## Connect Google Sheets
 
 1. Create a dedicated spreadsheet named **Cambridge Darts Club — 180 Records (POC)**. Import the provided sample workbook (or import `sample-records.csv`) and name the tab **Records**.
-2. Keep exactly two columns with headers **Player** and **Date** in row 1. Add one row per 180. The sample names are fictional; remove the sample rows before recording real results.
+2. Keep headers **Player** and **Date** in row 1. Optionally add **Count** in C1. For a starting total, enter the player and their count with Date blank. For a new single 180, enter the player and date and leave Count blank (or enter 1). Counts must be positive whole numbers. The sample names are fictional; remove the sample rows before recording real results.
 3. Format the whole Date column with the custom date format **yyyy-mm-dd** (for example, `2026-09-26`). Use actual dates in the sheet. Keep the names consistent; two different players with the same name need distinguishable display names.
 4. In **File → Share → Publish to web**, select the **Records** tab (not the entire document) and **Comma-separated values (.csv)**. Publish and leave **Automatically republish when changes are made** enabled.
 5. Keep edit access restricted to the club organisers. Published names and dates can be read by anyone, so only put data intended for public display in this dedicated spreadsheet. Do not include contact details or membership information.
@@ -33,7 +33,7 @@ Open the deployed site and confirm the sample banner disappears. With a sample-o
 
 The site polls once a minute while visible and checks immediately when you return to the tab. Google publication can take a few minutes, so this is automatic but not instant. **Refresh now** requests another check. Browser/network errors retain the last successful results with an explicit warning; they never silently substitute demo data. No results are stored in browser storage. A page reload without a connection shows an unavailable state.
 
-Blank rows are ignored. Incomplete rows and dates in other formats are excluded with their row numbers shown. Empty sheets display an empty board. Invalid CSV/header responses are treated as errors. Player names are inserted as text, never HTML. Future dates are accepted as entered; correct accidental future dates in the sheet.
+Blank rows are ignored. Incomplete rows, invalid counts and dates in other formats are excluded with their row numbers shown. Undated starting totals require an explicit Count and never appear in Recent 180s or Latest maximum. Starting totals are added to every other row: exclude already-listed dated 180s from the starting total to avoid double counting. A zero starting total needs no row. Empty sheets display an empty board. Invalid CSV/header responses are treated as errors. Player names are inserted as text, never HTML. Future dates are accepted as entered; correct accidental future dates in the sheet.
 
 ## Sources
 
