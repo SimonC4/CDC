@@ -38,7 +38,7 @@ async function refresh() {
     const response = await fetch(url, {cache:'no-store',credentials:'omit',signal:controller.signal});
     if (!response.ok) throw new Error(`The sheet could not be read (HTTP ${response.status}).`);
     const data = Darts.readRecords(await response.text()); render(data); lastSuccess = new Date();
-    $('status').textContent = `${demoMode ? 'Sample records loaded' : 'Sheet checked'} · ${lastSuccess.toLocaleTimeString('en-NZ',{hour:'2-digit',minute:'2-digit'})}`;
+    $('status').textContent = `${demoMode ? 'Sample records loaded' : 'Last checked'} · ${lastSuccess.toLocaleTimeString('en-NZ',{hour:'2-digit',minute:'2-digit'})}`;
   } catch (error) {
     $('status').textContent = lastSuccess ? `Update failed · Showing records last checked at ${lastSuccess.toLocaleTimeString('en-NZ',{hour:'2-digit',minute:'2-digit'})}. Retrying automatically.` : 'Unable to load records. Retrying automatically.';
     $('warning').hidden = false; $('warning').textContent = error.name === 'AbortError' ? 'The request timed out. Try Refresh now.' : error.message + ' Check the connection and that the sheet is still published.';
