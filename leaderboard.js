@@ -63,7 +63,7 @@
     }
     const standings = [...map.values()].sort((a,b) => b.total-a.total || a.player.localeCompare(b.player, 'en-NZ'));
     standings.forEach((p,i) => p.rank = i && p.total === standings[i-1].total ? standings[i-1].rank : i+1);
-    const recent = records.filter(r => r.date).sort((a,b) => b.date.localeCompare(a.date) || b.row-a.row).slice(0,10);
+    const recent = records.filter(r => r.date).sort((a,b) => b.date.localeCompare(a.date) || b.row-a.row).slice(0,20);
     return { standings, recent, total: records.reduce((sum,r) => sum + (r.count ?? 1),0), latest: recent[0]?.date || null };
   }
   const api = { parseCSV, validDate, readRecords, summarise };
