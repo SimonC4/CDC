@@ -20,7 +20,7 @@ function render(data) {
   $('empty').hidden = standings.length > 0; $('empty').textContent = 'No 180s recorded yet.';
   $('recent-empty').hidden = recent.length > 0; $('recent-empty').textContent = 'No dated 180s recorded yet.';
   $('warning').hidden = data.invalidRows.length === 0;
-  $('warning').textContent = data.invalidRows.length ? `${data.invalidRows.length} invalid row(s) excluded (sheet rows ${data.invalidRows.slice(0,12).join(', ')}${data.invalidRows.length > 12 ? ', …' : ''}). Use a player and YYYY-MM-DD date, or leave Date blank and enter a positive whole number in Count for a starting total.` : '';
+  $('warning').textContent = data.invalidRows.length ? `${data.invalidRows.length} invalid row(s) excluded (sheet rows ${data.invalidRows.slice(0,12).join(', ')}${data.invalidRows.length > 12 ? ', …' : ''}). Use a player and a date such as 1 Sep 2026 or 2026-09-01, or leave Date blank and enter a positive whole number in Count for a starting total.` : '';
 }
 function sourceUrl() {
   if (demoMode) return new URL('sample-records.csv',location.href);

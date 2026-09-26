@@ -20,10 +20,20 @@
     return rows;
   }
   function validDate(value) {
-    // Require ISO dates to avoid ambiguous day/month interpretation.
+    // Validate canonical dates without browser-dependent parsing.
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
     const date = new Date(value + 'T12:00:00Z');
     return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+  }
+  function normaliseDate(value) {
+    if (validDate(value)) return value;
+    const match = /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/.exec(value);
+    if (!match) return null;
+    const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    const month = months.indexOf(match[2].toLowerCase() === 'sept' ? 'sep' : match[2].toLowerCase());
+    if (month < 0) return null;
+    const iso = `${match[3]}-${String(month + 1).padStart(2,'0')}-${match[1].padStart(2,'0')}`;
+    return validDate(iso) ? iso : null;
   }
   function readRecords(csv) {
     const rows = parseCSV(csv), header = rows.shift() || [];
@@ -33,12 +43,13 @@
     const pi = names.indexOf('player'), di = names.indexOf('date'), ci = names.indexOf('count'), records = [], invalidRows = [];
     rows.forEach((row, i) => {
       if (row.every(s => !s.trim())) return;
-      const player = (row[pi] || '').trim().replace(/\s+/g, ' '), date = (row[di] || '').trim();
+      const player = (row[pi] || '').trim().replace(/\s+/g, ' '), rawDate = (row[di] || '').trim();
+      const date = rawDate ? normaliseDate(rawDate) : '';
       const rawCount = ci < 0 ? '' : (row[ci] || '').trim();
       const count = rawCount === '' ? 1 : Number(rawCount);
       const countValid = rawCount === '' || (/^\d+$/.test(rawCount) && Number.isSafeInteger(count) && count > 0);
       // An undated row must explicitly specify its opening total.
-      if (row.length > names.length || !player || !countValid || (date ? !validDate(date) : rawCount === '')) { invalidRows.push(i + 2); return; }
+      if (row.length > names.length || !player || !countValid || (rawDate ? date === null : rawCount === '')) { invalidRows.push(i + 2); return; }
       records.push({ player, date, count, row: i + 2 });
     });
     return { records, invalidRows };
