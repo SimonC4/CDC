@@ -8,7 +8,6 @@ const el = (tag, text, className) => { const node = document.createElement(tag);
 $('demo').hidden = !demoMode;
 function render(data) {
   const {standings,recent,total,latest} = Darts.summarise(data.records);
-  $('total').textContent = total; $('players').textContent = standings.length; $('latest').textContent = latest ? formatDate(latest) : '—';
   $('standings').replaceChildren(...standings.map(p => {
     const row = document.createElement('tr'); if(p.rank === 1) row.className = 'leader';
     row.append(el('td', String(p.rank).padStart(2,'0')), el('td',p.player), el('td',p.total,'number')); return row;
