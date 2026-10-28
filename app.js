@@ -14,7 +14,7 @@ function render(data) {
   }));
   $('recent-list').replaceChildren(...recent.map(r => {
     const item = document.createElement('li'), details = document.createElement('div'), time = el('time',formatDate(r.date)); time.dateTime = r.date;
-    details.append(el('strong',r.player),time); item.append(details,el('span',`x${r.count}`,'maximum')); return item;
+    details.append(el('strong',r.player),time); item.append(details,el('span',`x${r.count}`,r.count >= 3 ? 'maximum maximum-triple' : r.count === 2 ? 'maximum maximum-double' : 'maximum')); return item;
   }));
   $('empty').hidden = standings.length > 0; $('empty').textContent = 'No 180s recorded yet.';
   $('recent-empty').hidden = recent.length > 0; $('recent-empty').textContent = 'No dated 180s recorded yet.';
